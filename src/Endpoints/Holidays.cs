@@ -16,14 +16,14 @@ public static class HolidayEndpoints
         app.MapGet("/timeline", GetTimelineWithVacation);
     }
 
-    private static async Task<IResult> GetNorwegianHolidays([FromQuery] int year)
+    private static IResult GetNorwegianHolidays([FromQuery] int year)
     {
         var result = DateCalculator.GetHolidaysAndNameForYear(year);
         return Results.Ok(result);
     }
 
 
-    private static async Task<IResult> GetWorkDaysAndHolidays([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
+    private static IResult GetWorkDaysAndHolidays([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
     {
         var businessDays = DateCalculator.WorkDaysBetween(fromDate, toDate);
         var holidaysBetween = DateCalculator.GetHolidaysBetweenDates(fromDate, toDate);
@@ -34,19 +34,19 @@ public static class HolidayEndpoints
             NumberOfBusinessDays = businessDays,
             HolidaysAndNames = DateCalculator.GetHolidaysAndNamesBetweenDates(fromDate, toDate),
         };
-        
+
         return Results.Ok(result);
     }
 
 
-    private static async Task<IResult> GetWorkDaysPerMonth([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
+    private static IResult GetWorkDaysPerMonth([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
     {
         var test = DateCalculator.GetWorkdaysPerMonth(fromDate, toDate);
         return Results.Ok(test);
     }
 
 
-    private static async Task<IResult> GetTimelineWithVacation([FromQuery] int year, [FromQuery] DateTime vacationStart,
+    private static IResult GetTimelineWithVacation([FromQuery] int year, [FromQuery] DateTime vacationStart,
         [FromQuery] DateTime vacationEnd)
     {
         var timeline = DateCalculator.GetTimelineWithVacation(year, vacationStart, vacationEnd);

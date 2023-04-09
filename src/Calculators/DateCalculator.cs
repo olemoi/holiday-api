@@ -5,8 +5,8 @@ namespace holiday_api.Calculators;
 
 public static class DateCalculator
 {
-    
-    static string[] MonthsInYear = new string[] { "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember" }; 
+
+    static string[] MonthsInYear = new string[] { "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember" };
     public static IEnumerable<DateTime> GetHolidaysBetweenDates(DateTime fromDate, DateTime toDate)
     {
         var holidays = GetHolidaysForYear(fromDate.Year);
@@ -15,9 +15,8 @@ public static class DateCalculator
         {
             holidays.ToList().AddRange(GetHolidaysForYear(toDate.Year));
         }
-
-        var holidaysBetween = holidays.Where(x => 
-            fromDate.Ticks <= x.Ticks && 
+        var holidaysBetween = holidays.Where(x =>
+            fromDate.Ticks <= x.Ticks &&
             x.Ticks <= toDate.Ticks &&
             x.DayOfWeek != DayOfWeek.Saturday &&
             x.DayOfWeek != DayOfWeek.Sunday
@@ -28,10 +27,10 @@ public static class DateCalculator
     public static double WorkDaysBetween(DateTime fromDate, DateTime toDate)
     {
         var businessDays = 1 + ((toDate - fromDate).TotalDays * 5 - (fromDate.DayOfWeek - toDate.DayOfWeek) * 2) / 7;
- 
+
         if (toDate.DayOfWeek == DayOfWeek.Saturday) businessDays--;
         if (fromDate.DayOfWeek == DayOfWeek.Sunday) businessDays--;
-        
+
         // Subtract 1 days. the day before enddate is the last working date.
         businessDays -= 1;
         if (businessDays < 0) businessDays = 0;
@@ -67,7 +66,7 @@ public static class DateCalculator
         {
             if (fromDate.Ticks <= holiday.Key.Ticks && holiday.Key.Ticks <= toDate.Ticks)
             {
-               holidaysBetween.Add(holiday.Key, holiday.Value); 
+                holidaysBetween.Add(holiday.Key, holiday.Value);
             }
         }
 
@@ -76,13 +75,13 @@ public static class DateCalculator
 
     public static IDictionary<string, double> GetWorkdaysPerMonth(DateTime fromDate, DateTime toDate)
     {
-        var months = new string[] { "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember" }; 
+        var months = new string[] { "Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember" };
         var workDaysPerMonth = new Dictionary<string, double>();
         var test = new List<(DateTime, DateTime)>();
         var lastDayInFirstMonth = new DateTime(fromDate.Year, fromDate.Month + 1, 1).AddTicks(-1);
         test.Add((fromDate, lastDayInFirstMonth));
         var tempDate = new DateTime(fromDate.Year, fromDate.Month + 1, 1);
-        while (tempDate< toDate && (tempDate.Month != toDate.Month || tempDate.Year != toDate.Year))
+        while (tempDate < toDate && (tempDate.Month != toDate.Month || tempDate.Year != toDate.Year))
         {
             var lastDayOfMonth = tempDate.AddMonths(1).AddTicks(-1);
             test.Add((tempDate, lastDayOfMonth));
@@ -91,8 +90,8 @@ public static class DateCalculator
 
         foreach (var dateRange in test)
         {
-            var businessDays = Math.Ceiling(WorkDaysBetween(dateRange.Item1, dateRange.Item2)); 
-            workDaysPerMonth.Add($"{months[dateRange.Item1.Month - 1]} {dateRange.Item1.Year}", businessDays);    
+            var businessDays = Math.Ceiling(WorkDaysBetween(dateRange.Item1, dateRange.Item2));
+            workDaysPerMonth.Add($"{months[dateRange.Item1.Month - 1]} {dateRange.Item1.Year}", businessDays);
         }
 
         var firstDayOfLastMonth = new DateTime(toDate.Year, toDate.Month, 1);
@@ -141,7 +140,7 @@ public static class DateCalculator
         {
             if (today.Ticks <= holiday.Key.Ticks && holiday.Key.Ticks <= endOfYear.Ticks)
             {
-               holidaysBetween.Add(holiday.Key, holiday.Value); 
+                holidaysBetween.Add(holiday.Key, holiday.Value);
             }
         }
 
