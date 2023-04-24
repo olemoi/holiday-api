@@ -16,4 +16,4 @@ jobs:
       -
         name: 'Echo git branch'
         run: |
-          echo $(git branch --show-current)
+          echo ${GITHUB_REF##*/}
