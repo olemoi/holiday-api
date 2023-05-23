@@ -27,9 +27,11 @@ jobs:
           label: v1.0.0
           status: version
           output: build/cyan.svg
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
         with:
-          github_token: ${{ github.token }}
-          publish_dir: ./build
+          add: './build'
+      # - name: Deploy
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ github.token }}
+      #     publish_dir: ./build
