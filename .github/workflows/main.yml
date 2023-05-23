@@ -25,13 +25,8 @@ jobs:
         uses: jaywcjlove/generated-badges@main
         with:
           label: version
-          status: v1.0.1
-          output: build/cyan.svg
+          status: v1.0.2
+          output: .github/workflows/badges/cyan.svg
       - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
         with:
-          add: './build'
-      # - name: Deploy
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ github.token }}
-      #     publish_dir: ./build
+          add: '.github/workflows/badges/'
