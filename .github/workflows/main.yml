@@ -6,14 +6,25 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - 
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         name: 'Check out repository'
-      -
-        name: 'Echo git version'
+      - name: 'Echo git version'
         run: |
           echo $(git describe --long --dirty --always --tags)
-      -
-        name: 'Echo git branch'
+      - name: 'Echo git branch'
         run: |
           echo ${GITHUB_REF##*/}
+      - run: mkdir -p build
+
+      - name: Generate Badges
+        uses: jaywcjlove/generated-badges@main
+        with:
+          label: v1.0.0
+          status: version
+          output: build/cyan.svg
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ github.token }}
+          publish_dir: ./build
